@@ -12,12 +12,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       priority: {
+        type: Sequelize.INTEGER
+      },
+      createdBy: {
         type: Sequelize.STRING
       },
-      created_by: {
-        type: Sequelize.STRING
-      },
-      assigned_to: {
+      assignedTo: {
         type: Sequelize.STRING
       },
       createdAt: {
