@@ -26,10 +26,24 @@ app.get('/api/tasks', function(req, res){
 });
 
 app.post('/api/tasks', function(req, res){
-    if (!req.body.title || req.body.priority === isNaN() || !req.body.createdBy || !req.body.assignedTo){
-      console.log('oh no');
-      return;
+    if (!req.body.title){
+      req.body.title = 'Lazy';
+      // next();
     }
+    console.log('next');
+    if (req.body.priority === NaN){
+      req.body.priority = '3';
+      // break;
+    }
+    if (!req.body.createdBy){
+      req.body.createdBy = 'You';
+      // break;
+    }
+    if (!req.body.assignedTo){
+      req.body.assignedTo = 'You';
+      // break;
+    }
+
     Card.create({
     title: req.body.title,
     priority: req.body.priority,
