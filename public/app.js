@@ -30,7 +30,7 @@ const TaskForm = React.createClass({
     let priority = this.state.priority;
     let createdBy = this.state.createdBy.trim();
     let assignedTo = this.state.assignedTo.trim();
-    if (!title || priority === NaN || !createdBy || !assignedTo){
+    if (!title || !priority || !createdBy || !assignedTo){
       console.log('oh no');
       return;
     }

@@ -30,7 +30,7 @@ app.post('/api/tasks', function(req, res){
       req.body.title = 'Lazy';
       // next();
     }
-    if (!req.body.priority){
+    if (!req.body.priority || typeof NaN !== 'number'){
       req.body.priority = 3;
       // break;
     }
@@ -54,7 +54,7 @@ app.post('/api/tasks', function(req, res){
   });
 });
 
-app.set('port', (process.env.PORT || 8080));
+app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function(){
   console.log(`Server listening on port: ${app.get('port')}`);
