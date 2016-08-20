@@ -30,12 +30,11 @@ const TaskForm = React.createClass({
     let priority = this.state.priority;
     let createdBy = this.state.createdBy.trim();
     let assignedTo = this.state.assignedTo.trim();
+    // ask about this
     if (!title || !priority || !createdBy || !assignedTo){
-      console.log('oh no');
       return;
     }
     this.props.onCommentSubmit({title: title, priority: priority, createdBy: createdBy, assignedTo: assignedTo});
-    console.log('oh no 38');
     this.setState({title: '', priority: NaN, createdBy: '', assignedTo: ''});
   },
 
@@ -43,14 +42,22 @@ const TaskForm = React.createClass({
     return (
       <form className="taskForm" onSubmit={this.handleSubmit}>
         <input type="text" placeholder="Title" value={this.state.title} onChange={this.handleTitleChange} />
-        <select value={this.state.priority} onChange={this.handlePriorityChange}>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-        <input type="text" placeholder="Created By (full name)" value={this.state.createdBy} onChange={this.handleCreatedByChange} />
-        <input type="text" placeholder="Assigned To (full name)" value={this.state.assignedTo} onChange={this.handleAssignedToChange} />
-        <input type="submit" value="Post" />
+        <p>
+          <select value={this.state.priority} onChange={this.handlePriorityChange}>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </p>
+        <p>
+          <input type="text" placeholder="Created By (full name)" value={this.state.createdBy} onChange={this.handleCreatedByChange} />
+        </p>
+        <p>
+          <input type="text" placeholder="Assigned To (full name)" value={this.state.assignedTo} onChange={this.handleAssignedToChange} />
+        </p>
+        <p>
+          <input type="submit" value="Post" />
+        </p>
       </form>
     );
   }
@@ -116,19 +123,18 @@ const MainBoard = React.createClass({
 
 const CardList = React.createClass({
   render: function(){
-    console.log(`inside CardList: ${this.props.data}`);
     const taskNodes = this.props.data.map(function(tasks, index){
       return(
         <CardTasks
           key={index}
           title={tasks.title}
+          priority={tasks.priority}
+          createdBy={tasks.createdBy}
+          assignedTo={tasks.assignedTo}
         >
-          { tasks.priority },
-          { tasks.createdBy },
-          { tasks.assignedTo }
         </CardTasks>
         );
-    });
+    })
     return (
       <div className="cardList">
         { taskNodes }
@@ -142,7 +148,10 @@ const CardTasks = React.createClass({
   render: function(){
     return (
       <div className="cardTasks">
-        {this.props.title}
+        {this.props.title + ' '}
+        {this.props.priority + ' '}
+        {this.props.createdBy + ' '}
+        {this.props.assignedTo + ' '}
       </div>
     );
   }
