@@ -2,9 +2,10 @@ const TaskForm = React.createClass({
   getInitialState: function() {
       return {
         title: '',
-        priority: NaN,
+        priority: 3,
         createdBy: '',
-        assignedTo: ''
+        assignedTo: '',
+        status: ''
       };
   },
 
@@ -24,36 +25,62 @@ const TaskForm = React.createClass({
     this.setState({assignedTo: e.target.value});
   },
 
+  handleStatusChange: function(e){
+    this.setState({status: e.target.value})
+  },
+
   handleSubmit: function(e){
     e.preventDefault();
     let title = this.state.title.trim();
     let priority = this.state.priority;
     let createdBy = this.state.createdBy.trim();
     let assignedTo = this.state.assignedTo.trim();
-    // ask about this
-    if (!title || !priority || !createdBy || !assignedTo){
+    let status = this.state.status;
+    if (!title || !priority || !createdBy || !assignedTo || !status){
       return;
     }
-    this.props.onCommentSubmit({title: title, priority: priority, createdBy: createdBy, assignedTo: assignedTo});
-    this.setState({title: '', priority: NaN, createdBy: '', assignedTo: ''});
+    this.props.onCommentSubmit({title: title, priority: priority, createdBy: createdBy, assignedTo: assignedTo, status: status});
+    this.setState({title: '', priority: 3, createdBy: '', assignedTo: '', status: ''});
   },
 
   render: function(){
     return (
       <form className="taskForm" onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Title" value={this.state.title} onChange={this.handleTitleChange} />
+        <label>
+          Title
+          <input type="text" placeholder="Title" value={this.state.title} onChange={this.handleTitleChange} />
+        </label>
         <p>
-          <select value={this.state.priority} onChange={this.handlePriorityChange}>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
+          <label>
+            Priority
+            <select value={this.state.priority} onChange={this.handlePriorityChange}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </label>
         </p>
         <p>
-          <input type="text" placeholder="Created By (full name)" value={this.state.createdBy} onChange={this.handleCreatedByChange} />
+          <label>
+            Created By:
+            <input type="text" placeholder="Created By (full name)" value={this.state.createdBy} onChange={this.handleCreatedByChange} />
+          </label>
         </p>
         <p>
-          <input type="text" placeholder="Assigned To (full name)" value={this.state.assignedTo} onChange={this.handleAssignedToChange} />
+          <label>
+            Assigned To:
+            <input type="text" placeholder="Assigned To (full name)" value={this.state.assignedTo} onChange={this.handleAssignedToChange} />
+          </label>
+        </p>
+        <p>
+          <label>
+            Status:
+            <select value={this.state.status} onChange={this.handleStatusChange}>
+              <option value="Queue">Queue</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Done">Done</option>
+            </select>
+          </label>
         </p>
         <p>
           <input type="submit" value="Post" />
@@ -99,21 +126,31 @@ const MainBoard = React.createClass({
     this.loadMainBoard();
   },
 
+  filterStatus: function(filter, data){
+    return data.filter(function(status){
+      return status.status === filter;
+    })
+  },
+
   render: function(){
     return (
       <div className="mainBoard">
         <div>
           <h1>React Kanban</h1>
         </div>
-        <div>
+        <div className="queueDiv">
           <h2>Queue</h2>
-            <CardList data={this.state.data}/>
+            <CardList data={this.filterStatus('Queue', this.state.data)}/>
         </div>
-        <div>
+        <div className="inProgressDiv">
           <h2>In Progress </h2>
+            <CardList data={this.filterStatus('In Progress', this.state.data)}/>
+
         </div>
-        <div>
+        <div className="done">
           <h2>Done</h2>
+            <CardList data={this.filterStatus('Done', this.state.data)}/>
+
         </div>
         <TaskForm onCommentSubmit={this.handleTaskSubmit} />
       </div>
@@ -131,6 +168,7 @@ const CardList = React.createClass({
           priority={tasks.priority}
           createdBy={tasks.createdBy}
           assignedTo={tasks.assignedTo}
+          status={tasks.status}
         >
         </CardTasks>
         );
@@ -148,10 +186,11 @@ const CardTasks = React.createClass({
   render: function(){
     return (
       <div className="cardTasks">
-        {this.props.title + ' '}
-        {this.props.priority + ' '}
-        {this.props.createdBy + ' '}
-        {this.props.assignedTo + ' '}
+        {`${this.props.title} `}
+        {`${this.props.priority} `}
+        {`${this.props.createdBy} `}
+        {`${this.props.assignedTo} `}
+        {`${this.props.status} `}
       </div>
     );
   }

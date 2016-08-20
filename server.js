@@ -29,7 +29,7 @@ app.post('/api/tasks', function(req, res){
     if (!req.body.title){
       req.body.title = 'Lazy';
     }
-    if (!req.body.priority || typeof NaN !== 'number'){
+    if (!req.body.priority){
       req.body.priority = 3;
     }
     if (!req.body.createdBy){
@@ -38,12 +38,16 @@ app.post('/api/tasks', function(req, res){
     if (!req.body.assignedTo){
       req.body.assignedTo = 'You';
     }
+    if (!req.body.status){
+      req.body.status = 'In Progress';
+    }
 
     Card.create({
     title: req.body.title,
     priority: req.body.priority,
     createdBy: req.body.createdBy,
-    assignedTo: req.body.assignedTo
+    assignedTo: req.body.assignedTo,
+    status: req.body.status
   })
   .then(function(data){
     res.json(data);

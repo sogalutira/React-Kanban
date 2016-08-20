@@ -9,6 +9,7 @@ module.exports = {
           assignedTo: 'Person1',
           createdAt : new Date(),
           updatedAt : new Date(),
+          status: 'Queue'
       }]
       );
   },
