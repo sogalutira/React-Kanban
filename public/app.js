@@ -1,7 +1,10 @@
 const TaskForm = React.createClass({
   getInitialState: function() {
       return {
-        title: ''
+        title: '',
+        priority: NaN,
+        createdBy: '',
+        assignedTo: ''
       };
   },
 
@@ -24,11 +27,16 @@ const TaskForm = React.createClass({
   handleSubmit: function(e){
     e.preventDefault();
     let title = this.state.title.trim();
-    if (!title){
+    let priority = this.state.priority;
+    let createdBy = this.state.createdBy.trim();
+    let assignedTo = this.state.assignedTo.trim();
+    if (!title || priority === NaN || !createdBy || !assignedTo){
+      console.log('oh no');
       return;
     }
-    this.props.onCommentSubmit({title: title});
-    this.setState({title: ''});
+    this.props.onCommentSubmit({title: title, priority: priority, createdBy: createdBy, assignedTo: assignedTo});
+    console.log('oh no 38');
+    this.setState({title: '', priority: NaN, createdBy: '', assignedTo: ''});
   },
 
   render: function(){
@@ -115,6 +123,9 @@ const CardList = React.createClass({
           key={index}
           title={tasks.title}
         >
+          { tasks.priority },
+          { tasks.createdBy },
+          { tasks.assignedTo }
         </CardTasks>
         );
     });

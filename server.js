@@ -26,8 +26,15 @@ app.get('/api/tasks', function(req, res){
 });
 
 app.post('/api/tasks', function(req, res){
-  Card.create({
-    title: req.body.title
+    if (!req.body.title || req.body.priority === isNaN() || !req.body.createdBy || !req.body.assignedTo){
+      console.log('oh no');
+      return;
+    }
+    Card.create({
+    title: req.body.title,
+    priority: req.body.priority,
+    createdBy: req.body.createdBy,
+    assignedTo: req.body.assignedTo
   })
   .then(function(data){
     res.json(data);
