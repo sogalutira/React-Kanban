@@ -30,9 +30,8 @@ app.post('/api/tasks', function(req, res){
       req.body.title = 'Lazy';
       // next();
     }
-    console.log('next');
-    if (req.body.priority === NaN){
-      req.body.priority = '3';
+    if (!req.body.priority){
+      req.body.priority = 3;
       // break;
     }
     if (!req.body.createdBy){
