@@ -54,9 +54,10 @@ const TaskForm = React.createClass({
           <label>
             Priority
             <select value={this.state.priority} onChange={this.handlePriorityChange}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="1">Low</option>
+              <option value="2">Medium</option>
+              <option value="3">High</option>
+              <option value="4">Important!</option>
             </select>
           </label>
         </p>
@@ -145,12 +146,10 @@ const MainBoard = React.createClass({
         <div className="inProgressDiv">
           <h2>In Progress </h2>
             <CardList data={this.filterStatus('In Progress', this.state.data)}/>
-
         </div>
         <div className="done">
           <h2>Done</h2>
             <CardList data={this.filterStatus('Done', this.state.data)}/>
-
         </div>
         <TaskForm onCommentSubmit={this.handleTaskSubmit} />
       </div>
@@ -190,7 +189,7 @@ const CardTasks = React.createClass({
         {`${this.props.priority} `}
         {`${this.props.createdBy} `}
         {`${this.props.assignedTo} `}
-        {`${this.props.status} `}
+
       </div>
     );
   }
