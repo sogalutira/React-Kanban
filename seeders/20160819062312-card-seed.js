@@ -10,7 +10,7 @@ module.exports = {
         assignedTo: 'Person1',
         createdAt : new Date(),
         updatedAt : new Date(),
-        status: 'Queue',
+        status: 'Queue'
         // user_id: 4
     }]
     );

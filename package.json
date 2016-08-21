@@ -4,7 +4,7 @@
   "description": "> A digital Kanban board made with React",
   "main": "app.js",
   "scripts": {
-    "dev": "npm run bild -- --watch",
+    "dev": "npm run build -- --watch",
     "build": "babel src/ --out-dir public/js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"

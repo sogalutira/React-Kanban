@@ -30,16 +30,16 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        foreignKey: true,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
       }
+      // user_id: {
+      //   type: Sequelize.INTEGER,
+      //   allowNull: true,
+      //   foreignKey: true,
+      //   references: {
+      //     model: 'User',
+      //     key: 'id'
+      //   }
+      // }
     });
   },
   down: function(queryInterface, Sequelize) {

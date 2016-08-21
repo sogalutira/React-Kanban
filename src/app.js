@@ -5,7 +5,7 @@ const TaskForm = React.createClass({
         priority: 3,
         createdBy: '',
         assignedTo: '',
-        status: ''
+        status: 'Queue'
       };
   },
 
@@ -36,11 +36,13 @@ const TaskForm = React.createClass({
     let createdBy = this.state.createdBy.trim();
     let assignedTo = this.state.assignedTo.trim();
     let status = this.state.status;
-    if (!title || !priority || !createdBy || !assignedTo || !status){
+    if (!title || !priority || !createdBy || !status){
       return;
     }
-    this.props.onCommentSubmit({title: title, priority: priority, createdBy: createdBy, assignedTo: assignedTo, status: status});
-    this.setState({title: '', priority: 3, createdBy: '', assignedTo: '', status: ''});
+    console.log('pass validation line 42');
+    this.props.onTaskSubmit({title: title, priority: priority, createdBy: createdBy, assignedTo: assignedTo, status: status});
+    this.setState({title: '', priority: 3, createdBy: '', assignedTo: '', status: 'Queue'});
+    console.log('on submit line 45');
   },
 
   render: function(){
@@ -105,6 +107,7 @@ const MainBoard = React.createClass({
   },
 
   handleTaskSubmit: function(tasks){
+    console.log('handling task submit line 110');
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -127,12 +130,6 @@ const MainBoard = React.createClass({
     this.loadMainBoard();
   },
 
-  filterStatus: function(filter, data){
-    return data.filter(function(status){
-      return status.status === filter;
-    })
-  },
-
   render: function(){
     return (
       <div className="mainBoard">
@@ -141,36 +138,52 @@ const MainBoard = React.createClass({
         </div>
         <div className="queueDiv">
           <h2>Queue</h2>
-            <CardList data={this.filterStatus('Queue', this.state.data)}/>
+            <CardList
+              data={this.state.data}
+              status = 'Queue'
+            />
         </div>
         <div className="inProgressDiv">
           <h2>In Progress </h2>
-            <CardList data={this.filterStatus('In Progress', this.state.data)}/>
+            <CardList
+              data={this.state.data}
+              status = 'In Progress'
+            />
         </div>
-        <div className="done">
+        <div className="doneDiv">
           <h2>Done</h2>
-            <CardList data={this.filterStatus('Done', this.state.data)}/>
+            <CardList
+              data={this.state.data}
+              status = 'Done'
+            />
         </div>
-        <TaskForm onCommentSubmit={this.handleTaskSubmit} />
+        <TaskForm onTaskSubmit={this.handleTaskSubmit} />
       </div>
     );
   }
 });
 
 const CardList = React.createClass({
+  filterStatus: function(filter, data){
+    return data.filter(function(status){
+      return status.status === filter;
+    })
+  },
+
   render: function(){
-    const taskNodes = this.props.data.map(function(tasks, index){
-      return(
-        <CardTasks
-          key={index}
-          title={tasks.title}
-          priority={tasks.priority}
-          createdBy={tasks.createdBy}
-          assignedTo={tasks.assignedTo}
-          status={tasks.status}
-        >
-        </CardTasks>
-        );
+    const taskNodes = this.filterStatus(this.props.status, this.props.data)
+      .map(function(tasks, index){
+        return(
+          <CardTasks
+            key={index}
+            title={tasks.title}
+            priority={tasks.priority}
+            createdBy={tasks.createdBy}
+            assignedTo={tasks.assignedTo}
+            status={tasks.status}
+          >
+          </CardTasks>
+          );
     })
     return (
       <div className="cardList">
