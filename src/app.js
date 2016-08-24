@@ -108,6 +108,15 @@ const MainBoard = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data){
+        data.sort(function(a,b){
+          if(a.priority < b.priority){
+            return 1;
+          }else if (a.priority > b.priority){
+            return -1;
+          }else{
+            return 0;
+          }
+        })
         console.log(`success data: ${data}`);
         this.setState({
           data: data
@@ -209,13 +218,15 @@ const CardTasks = React.createClass({
   render: function(){
     return (
       <div className="cardTasks">
-        {`${this.props.title} `}
-        <br/>
-        {`${this.props.priority} `}
-        <br/>
-        {`Created by: ${this.props.createdBy} `}
-        <br/>
-        {`Assigned to: ${this.props.assignedTo} `}
+        <div className="cardText">
+          {`${this.props.title} `}
+          <br/>
+          {`${this.props.priority} `}
+          <br/>
+          {`Created by: ${this.props.createdBy} `}
+          <br/>
+          {`Assigned to: ${this.props.assignedTo} `}
+        </div>
       </div>
     );
   }

@@ -27,5 +27,8 @@ body {
     border-width: 1px;
     margin: 5px;
     width: 100%; }
+  body .cardText {
+    margin: 5px;
+    margin-left: 10px; }
   body .taskForm {
     margin-top: 50px; }
