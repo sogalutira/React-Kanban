@@ -1,2 +1,31 @@
+@import 'https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz';
 body {
-  background: gainsboro; }
+  background: gainsboro;
+  font-family: "Yanone Kaffeesatz", sans-serif; }
+  body .mainBoard {
+    width: 100%; }
+  body .statusContainer {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-left: auto;
+    margin-right: auto; }
+  body .queueDiv, body .inProgressDiv, body .doneDiv {
+    width: 30%;
+    text-align: center; }
+  body .cardList {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: left; }
+  body .cardTasks {
+    display: block;
+    border-style: solid;
+    border-width: 1px;
+    margin: 5px;
+    width: 100%; }
+  body .taskForm {
+    margin-top: 50px; }

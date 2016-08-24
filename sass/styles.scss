@@ -1,5 +1,50 @@
+@import 'https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz';
+
+$board-font: 'Yanone Kaffeesatz', sans-serif;
 $board-color : gainsboro;
 
 body {
   background: $board-color;
+  font-family: $board-font;
+
+  .mainBoard{
+    width: 100%;
+  }
+  .statusContainer{
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .queueDiv {
+    width: 30%;
+    text-align: center;
+  }
+  .inProgressDiv {
+    @extend .queueDiv;
+  }
+  .doneDiv{
+    @extend .queueDiv;
+  }
+  .cardList{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+  }
+  .cardTasks{
+    display: block;
+    border-style: solid;
+    border-width: 1px;
+    margin: 5px;
+    width: 100%;
+  }
+
+  .taskForm{
+    margin-top: 50px;
+  }
 }

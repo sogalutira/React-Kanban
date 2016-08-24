@@ -39,10 +39,18 @@ const TaskForm = React.createClass({
     if (!title || !priority || !createdBy || !status){
       return;
     }
-    console.log('pass validation line 42');
-    this.props.onTaskSubmit({title: title, priority: priority, createdBy: createdBy, assignedTo: assignedTo, status: status});
-    this.setState({title: '', priority: 3, createdBy: '', assignedTo: '', status: 'Queue'});
-    console.log('on submit line 45');
+    this.props.onTaskSubmit({
+      title: title,
+      priority: priority,
+      createdBy: createdBy,
+      assignedTo: assignedTo,
+      status: status});
+    this.setState({
+      title: '',
+      priority: 3,
+      createdBy: '',
+      assignedTo: '',
+      status: 'Queue'});
   },
 
   render: function(){
@@ -101,13 +109,14 @@ const MainBoard = React.createClass({
       cache: false,
       success: function(data){
         console.log(`success data: ${data}`);
-        this.setState({data: data});
+        this.setState({
+          data: data
+        });
       }.bind(this)
     });
   },
 
   handleTaskSubmit: function(tasks){
-    console.log('handling task submit line 110');
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -133,29 +142,31 @@ const MainBoard = React.createClass({
   render: function(){
     return (
       <div className="mainBoard">
-        <div>
+        <div className="titleHeader">
           <h1>React Kanban</h1>
         </div>
-        <div className="queueDiv">
-          <h2>Queue</h2>
-            <CardList
-              data={this.state.data}
-              status = 'Queue'
-            />
-        </div>
-        <div className="inProgressDiv">
-          <h2>In Progress </h2>
-            <CardList
-              data={this.state.data}
-              status = 'In Progress'
-            />
-        </div>
-        <div className="doneDiv">
-          <h2>Done</h2>
-            <CardList
-              data={this.state.data}
-              status = 'Done'
-            />
+        <div className="statusContainer">
+          <div className="queueDiv">
+            <h2>Queue</h2>
+              <CardList
+                data={this.state.data}
+                status = 'Queue'
+              />
+          </div>
+          <div className="inProgressDiv">
+            <h2>In Progress </h2>
+              <CardList
+                data={this.state.data}
+                status = 'In Progress'
+              />
+          </div>
+          <div className="doneDiv">
+            <h2>Done</h2>
+              <CardList
+                data={this.state.data}
+                status = 'Done'
+              />
+          </div>
         </div>
         <TaskForm onTaskSubmit={this.handleTaskSubmit} />
       </div>
@@ -177,7 +188,7 @@ const CardList = React.createClass({
           <CardTasks
             key={index}
             title={tasks.title}
-            priority={tasks.priority}
+            priority= {tasks.priority}
             createdBy={tasks.createdBy}
             assignedTo={tasks.assignedTo}
             status={tasks.status}
@@ -199,10 +210,12 @@ const CardTasks = React.createClass({
     return (
       <div className="cardTasks">
         {`${this.props.title} `}
+        <br/>
         {`${this.props.priority} `}
-        {`${this.props.createdBy} `}
-        {`${this.props.assignedTo} `}
-
+        <br/>
+        {`Created by: ${this.props.createdBy} `}
+        <br/>
+        {`Assigned to: ${this.props.assignedTo} `}
       </div>
     );
   }
