@@ -54,6 +54,18 @@ app.post('/api/tasks', function(req, res){
   });
 });
 
+app.delete('/api/tasks/:id', function(req, res){
+  console.log('req params: ', req.params.id);
+  Card.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(function(data){
+    res.json(data);
+  });
+});
+
 app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function(){

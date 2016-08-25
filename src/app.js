@@ -64,10 +64,10 @@ const TaskForm = React.createClass({
           <label>
             Priority
             <select value={this.state.priority} onChange={this.handlePriorityChange}>
-              <option value="1">Low</option>
-              <option value="2">Medium</option>
-              <option value="3">High</option>
-              <option value="4">Important!</option>
+              <option ref='Low' value="1">Low</option>
+              <option ref='Medium' value="2">Medium</option>
+              <option ref='High' value="3">High</option>
+              <option ref='Important!' value="4">Important!</option>
             </select>
           </label>
         </p>
@@ -117,7 +117,6 @@ const MainBoard = React.createClass({
             return 0;
           }
         })
-        console.log(`success data: ${data}`);
         this.setState({
           data: data
         });
@@ -190,6 +189,7 @@ const CardList = React.createClass({
     })
   },
 
+
   render: function(){
     const taskNodes = this.filterStatus(this.props.status, this.props.data)
       .map(function(tasks, index){
@@ -201,6 +201,7 @@ const CardList = React.createClass({
             createdBy={tasks.createdBy}
             assignedTo={tasks.assignedTo}
             status={tasks.status}
+            id={tasks.id}
           >
           </CardTasks>
           );
@@ -208,6 +209,7 @@ const CardList = React.createClass({
     return (
       <div className="cardList">
         { taskNodes }
+
       </div>
     );
   }
@@ -215,17 +217,35 @@ const CardList = React.createClass({
 
 
 const CardTasks = React.createClass({
+  handleDelete: function(e){
+    e.preventDefault();
+    console.log('after preventDefault:', this.props);
+    $.ajax({
+      url: `/api/tasks/${this.props.id}`,
+      dataType: 'json',
+      type: 'DELETE',
+      success: function(){
+        console.log('delete handle');
+      }.bind(this)
+    });
+  },
+
   render: function(){
     return (
       <div className="cardTasks">
         <div className="cardText">
           {`${this.props.title} `}
           <br/>
-          {`${this.props.priority} `}
+          {`Priority: ${this.props.priority} `}
           <br/>
           {`Created by: ${this.props.createdBy} `}
           <br/>
           {`Assigned to: ${this.props.assignedTo} `}
+          <div>
+            <form className="deleteForm" onSubmit={this.handleDelete}>
+              <input type="submit" value="Delete" />
+            </form>
+          </div>
         </div>
       </div>
     );
