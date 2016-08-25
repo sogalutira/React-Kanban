@@ -26,21 +26,21 @@ app.get('/api/tasks', function(req, res){
 });
 
 app.post('/api/tasks', function(req, res){
-    if (!req.body.title){
-      req.body.title = 'Lazy';
-    }
-    if (!req.body.priority){
-      req.body.priority = 3;
-    }
-    if (!req.body.createdBy){
-      req.body.createdBy = 'You';
-    }
-    if (!req.body.assignedTo){
-      req.body.assignedTo = 'You';
-    }
-    if (!req.body.status){
-      req.body.status = 'In Progress';
-    }
+    // if (!req.body.title){
+    //   req.body.title = 'Lazy';
+    // }
+    // if (!req.body.priority){
+    //   req.body.priority = 3;
+    // }
+    // if (!req.body.createdBy){
+    //   req.body.createdBy = 'You';
+    // }
+    // if (!req.body.assignedTo){
+    //   req.body.assignedTo = 'You';
+    // }
+    // if (!req.body.status){
+    //   req.body.status = 'In Progress';
+    // }
 
     Card.create({
     title: req.body.title,
@@ -55,7 +55,6 @@ app.post('/api/tasks', function(req, res){
 });
 
 app.delete('/api/tasks/:id', function(req, res){
-  console.log('req params: ', req.params.id);
   Card.destroy({
     where: {
       id: req.params.id

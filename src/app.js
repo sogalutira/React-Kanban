@@ -36,8 +36,23 @@ const TaskForm = React.createClass({
     let createdBy = this.state.createdBy.trim();
     let assignedTo = this.state.assignedTo.trim();
     let status = this.state.status;
-    if (!title || !priority || !createdBy || !status){
-      return;
+    // if (!title || !priority || !createdBy || !status){
+    //   return;
+    // }
+        if (!title){
+      title = 'Lazy';
+    }
+    if (!priority){
+      priority = 3;
+    }
+    if (!createdBy){
+      createdBy = 'You';
+    }
+    if (!assignedTo){
+      assignedTo = 'You';
+    }
+    if (!status){
+      status = 'In Progress';
     }
     this.props.onTaskSubmit({
       title: title,
@@ -159,6 +174,7 @@ const MainBoard = React.createClass({
               <CardList
                 data={this.state.data}
                 status = 'Queue'
+                loadMainBoard={this.loadMainBoard}
               />
           </div>
           <div className="inProgressDiv">
@@ -166,6 +182,7 @@ const MainBoard = React.createClass({
               <CardList
                 data={this.state.data}
                 status = 'In Progress'
+                loadMainBoard={this.loadMainBoard}
               />
           </div>
           <div className="doneDiv">
@@ -173,6 +190,7 @@ const MainBoard = React.createClass({
               <CardList
                 data={this.state.data}
                 status = 'Done'
+                loadMainBoard={this.loadMainBoard}
               />
           </div>
         </div>
@@ -191,10 +209,12 @@ const CardList = React.createClass({
 
 
   render: function(){
+    const loadMainBoard = this.props.loadMainBoard;
     const taskNodes = this.filterStatus(this.props.status, this.props.data)
       .map(function(tasks, index){
         return(
           <CardTasks
+            loadMainBoard={loadMainBoard}
             key={index}
             title={tasks.title}
             priority= {tasks.priority}
@@ -219,13 +239,12 @@ const CardList = React.createClass({
 const CardTasks = React.createClass({
   handleDelete: function(e){
     e.preventDefault();
-    console.log('after preventDefault:', this.props);
     $.ajax({
       url: `/api/tasks/${this.props.id}`,
       dataType: 'json',
       type: 'DELETE',
       success: function(){
-        console.log('delete handle');
+        this.props.loadMainBoard();
       }.bind(this)
     });
   },
