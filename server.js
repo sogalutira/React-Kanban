@@ -65,6 +65,40 @@ app.delete('/api/tasks/:id', function(req, res){
   });
 });
 
+app.get('/api/tasks/:id', function(req, res){
+  Card.findOne({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(function(data){
+    res.json(data);
+  });
+});
+
+app.put('/api/tasks/:id', function(req, res){
+  console.log("PUT");
+  console.log(Object.keys(req.body)[0]);
+  Card.update({
+    status: "In Progress"
+  }, {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(function(){
+    return Card.findOne({
+      where: {
+        id: req.params.id
+      }
+    });
+  })
+  .then(function(update){
+    res.json(update);
+  });
+});
+
+
 app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function(){

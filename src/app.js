@@ -163,6 +163,7 @@ const MainBoard = React.createClass({
   },
 
   render: function(){
+    console.log('props: ', this.props);
     return (
       <div className="mainBoard">
         <div className="titleHeader">
@@ -175,6 +176,7 @@ const MainBoard = React.createClass({
                 data={this.state.data}
                 status = 'Queue'
                 loadMainBoard={this.loadMainBoard}
+                edit={this.handleEdit}
               />
           </div>
           <div className="inProgressDiv">
@@ -183,6 +185,7 @@ const MainBoard = React.createClass({
                 data={this.state.data}
                 status = 'In Progress'
                 loadMainBoard={this.loadMainBoard}
+                edit={this.handleEdit}
               />
           </div>
           <div className="doneDiv">
@@ -191,6 +194,7 @@ const MainBoard = React.createClass({
                 data={this.state.data}
                 status = 'Done'
                 loadMainBoard={this.loadMainBoard}
+                edit={this.handleEdit}
               />
           </div>
         </div>
@@ -207,13 +211,13 @@ const CardList = React.createClass({
     })
   },
 
-
   render: function(){
     const loadMainBoard = this.props.loadMainBoard;
     const taskNodes = this.filterStatus(this.props.status, this.props.data)
       .map(function(tasks, index){
         return(
           <CardTasks
+
             loadMainBoard={loadMainBoard}
             key={index}
             title={tasks.title}
@@ -235,7 +239,6 @@ const CardList = React.createClass({
   }
 });
 
-
 const CardTasks = React.createClass({
   handleDelete: function(e){
     e.preventDefault();
@@ -249,7 +252,21 @@ const CardTasks = React.createClass({
     });
   },
 
+  handleEdit: function(e){
+    e.preventDefault();
+    $.ajax({
+      url: `/api/tasks/${this.props.id}`,
+      dataType: 'json',
+      type: 'PUT',
+      data: this.props.status,
+      success: (result) => {
+        console.log("APP PUT");
+      }
+    });
+  },
+
   render: function(){
+
     return (
       <div className="cardTasks">
         <div className="cardText">
@@ -263,6 +280,9 @@ const CardTasks = React.createClass({
           <div>
             <form className="deleteForm" onSubmit={this.handleDelete}>
               <input type="submit" value="Delete" />
+            </form>
+            <form className="editForm" onSubmit={this.handleEdit}>
+              <input type="submit" value="In Progress" />
             </form>
           </div>
         </div>
