@@ -26,22 +26,6 @@ app.get('/api/tasks', function(req, res){
 });
 
 app.post('/api/tasks', function(req, res){
-    // if (!req.body.title){
-    //   req.body.title = 'Lazy';
-    // }
-    // if (!req.body.priority){
-    //   req.body.priority = 3;
-    // }
-    // if (!req.body.createdBy){
-    //   req.body.createdBy = 'You';
-    // }
-    // if (!req.body.assignedTo){
-    //   req.body.assignedTo = 'You';
-    // }
-    // if (!req.body.status){
-    //   req.body.status = 'In Progress';
-    // }
-
     Card.create({
     title: req.body.title,
     priority: req.body.priority,
@@ -77,10 +61,9 @@ app.get('/api/tasks/:id', function(req, res){
 });
 
 app.put('/api/tasks/:id', function(req, res){
-  console.log("PUT");
-  console.log(Object.keys(req.body)[0]);
+  console.log('req', req.body.status);
   Card.update({
-    status: "In Progress"
+    status: req.body.status
   }, {
     where: {
       id: req.params.id
@@ -93,8 +76,8 @@ app.put('/api/tasks/:id', function(req, res){
       }
     });
   })
-  .then(function(update){
-    res.json(update);
+  .then(function(data){
+    res.json(data);
   });
 });
 
