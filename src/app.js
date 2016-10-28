@@ -139,6 +139,19 @@ const MainBoard = React.createClass({
     });
   },
 
+    handleEdit: function(e){
+    e.preventDefault();
+    $.ajax({
+      url: `/api/tasks/${this.props.id}`,
+      dataType: 'json',
+      type: 'PUT',
+      data: this.props.status,
+      success: function() {
+        this.loadMainBoard();
+        }.bind(this)
+      });
+    },
+
   handleTaskSubmit: function(tasks){
     $.ajax({
       url: this.props.url,
@@ -163,7 +176,6 @@ const MainBoard = React.createClass({
   },
 
   render: function(){
-    console.log('props: ', this.props);
     return (
       <div className="mainBoard">
         <div className="titleHeader">
@@ -176,7 +188,6 @@ const MainBoard = React.createClass({
                 data={this.state.data}
                 status = 'Queue'
                 loadMainBoard={this.loadMainBoard}
-                edit={this.handleEdit}
               />
           </div>
           <div className="inProgressDiv">
@@ -185,7 +196,6 @@ const MainBoard = React.createClass({
                 data={this.state.data}
                 status = 'In Progress'
                 loadMainBoard={this.loadMainBoard}
-                edit={this.handleEdit}
               />
           </div>
           <div className="doneDiv">
@@ -194,7 +204,6 @@ const MainBoard = React.createClass({
                 data={this.state.data}
                 status = 'Done'
                 loadMainBoard={this.loadMainBoard}
-                edit={this.handleEdit}
               />
           </div>
         </div>
@@ -252,18 +261,29 @@ const CardTasks = React.createClass({
     });
   },
 
-  handleEdit: function(e){
-    e.preventDefault();
-    $.ajax({
-      url: `/api/tasks/${this.props.id}`,
-      dataType: 'json',
-      type: 'PUT',
-      data: this.props.status,
-      success: (result) => {
-        console.log("APP PUT");
-      }
-    });
-  },
+  // handleEdit: function(e){
+  //   e.preventDefault();
+  //   $.ajax({
+  //     url: `/api/tasks/${this.props.id}`,
+  //     dataType: 'json',
+  //     type: 'PUT',
+  //     data: this.props.status,
+  //     success: function(result) {
+  //       console.log('handleEdit');
+  //       console.log('results: ', result);
+  //       if(result.status === "Queue"){
+  //         result.status = "In Progress";
+  //       }else{
+  //         if (result.status === "In Progress"){
+  //           result.status = "Done";
+  //         }
+  //         return result.status;
+  //       }
+  //       this.props.loadMainBoard();
+  //       }.bind(this)
+  //     });
+  //   },
+
 
   render: function(){
 
@@ -278,11 +298,10 @@ const CardTasks = React.createClass({
           <br/>
           {`Assigned to: ${this.props.assignedTo} `}
           <div>
+            <button onClick={this.handleEdit}> >
+            </button>
             <form className="deleteForm" onSubmit={this.handleDelete}>
               <input type="submit" value="Delete" />
-            </form>
-            <form className="editForm" onSubmit={this.handleEdit}>
-              <input type="submit" value="In Progress" />
             </form>
           </div>
         </div>
